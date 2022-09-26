@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^9.1.2",
+    "mysql2": "^2.3.3"
+  },
+  "name": "employee-tracker",
+  "description": "AS A business owner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AaronLiuXM/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AaronLiuXM/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/AaronLiuXM/Employee-Tracker#readme"
+}
