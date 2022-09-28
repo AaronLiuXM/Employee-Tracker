@@ -43,3 +43,7 @@ THEN I am prompted to enter the employee’s first name, last name, role, and ma
 WHEN I choose to update an employee role
 
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+
+[employee_tracker_video.webm](https://user-images.githubusercontent.com/104994115/192823939-8b6a4c00-fbf8-4c70-b73d-d1a666f773c5.webm)
+
+
