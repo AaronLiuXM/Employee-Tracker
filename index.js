@@ -16,6 +16,7 @@ function runApp() {
           "View Roles",
           "View Employees",
           "Add Department",
+          "Add Role",
         ],
       },
     ])
@@ -35,6 +36,10 @@ function runApp() {
 
         case "Add Department":
           addDepartment();
+          break;
+
+        case "Add Role":
+          addRole();
           break;
       }
     });
@@ -91,6 +96,59 @@ function viewEmployee() {
       runApp();
     }
   );
+}
+
+function addRole() {
+  db.query("SELECT * FROM department", function (err, res) {
+    if (err) throw err;
+
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "role",
+          message: "Please enter the new role",
+        },
+        {
+          type: "list",
+          name: "dept",
+          message: "Please select the department",
+          choices: function () {
+            var deptArry = [];
+            for (let i = 0; i < res.length; i++) {
+              deptArry.push(res[i].name);
+            }
+            return deptArry;
+          },
+        },
+        {
+          type: "number",
+          name: "salary",
+          message: "Please enter the salary",
+        },
+      ])
+      .then(function (answer) {
+        let department_id;
+        for (let j = 0; j < res.length; j++) {
+          if (res[j].name == answer.dept) {
+            department_id = res[j].id;
+          }
+        }
+        db.query(
+          "INSERT INTO role SET?",
+          {
+            title: answer.role,
+            department_id: department_id,
+            salary: answer.salary,
+          },
+          function (err, res) {
+            if (err) throw err;
+            console.log("New role is added successfully");
+            runApp();
+          }
+        );
+      });
+  });
 }
 
 function addDepartment() {
