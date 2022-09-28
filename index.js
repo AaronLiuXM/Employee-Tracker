@@ -18,6 +18,7 @@ function runApp() {
           "Add Department",
           "Add Role",
           "Add Employee",
+          "Update Employee",
         ],
       },
     ])
@@ -45,6 +46,10 @@ function runApp() {
 
         case "Add Employee":
           addEmployee();
+          break;
+
+        case "Update Employee":
+          updateEmployee();
           break;
       }
     });
@@ -231,6 +236,68 @@ function addDepartment() {
       });
       runApp();
     });
+}
+
+function updateEmployee() {
+  db.query(`SELECT * FROM employee`, function (err, res) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "employee",
+          message: "Please select the employee",
+          choices: function () {
+            var empArray = [];
+            res.forEach((res) => {
+              empArray.push(res.last_name);
+            });
+            return empArray;
+          },
+        },
+      ])
+      .then(function (answer) {
+        const name = answer.employee;
+
+        db.query("SELECT * FROM role", function (err, result) {
+          inquirer
+            .prompt([
+              {
+                type: "list",
+                name: "role",
+                message: "Please select the new role",
+                choices: function () {
+                  var roleArray = [];
+                  result.forEach((result) => {
+                    roleArray.push(result.title);
+                  });
+                  return roleArray;
+                },
+              },
+            ])
+            .then(function (roleAnswer) {
+              const role = roleAnswer.role;
+              db.query(
+                "SELECT * FROM role WHERE title =?",
+                [role],
+                function (err, res) {
+                  if (err) throw err;
+                  let roleID = res[0].id;
+
+                  let query =
+                    "UPDATE employtee SET role_id =? WHERE last_name =?";
+                  let values = [parseInt(roleID), name];
+
+                  db.query(query, values, function (err, res) {
+                    console.log(`${name}'s role updated successfully`);
+                  });
+                  runApp();
+                }
+              );
+            });
+        });
+      });
+  });
 }
 
 db.connect((err) => {
