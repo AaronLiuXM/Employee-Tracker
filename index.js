@@ -11,7 +11,12 @@ function runApp() {
         type: "list",
         name: "start",
         message: "Please select one of the option",
-        choices: ["View Departments", "View Roles", "View Employees"],
+        choices: [
+          "View Departments",
+          "View Roles",
+          "View Employees",
+          "Add Department",
+        ],
       },
     ])
     .then((answers) => {
@@ -26,6 +31,10 @@ function runApp() {
 
         case "View Employees":
           viewEmployee();
+          break;
+
+        case "Add Department":
+          addDepartment();
           break;
       }
     });
@@ -82,6 +91,25 @@ function viewEmployee() {
       runApp();
     }
   );
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newDept",
+        message: "Please enter the name of the new department",
+      },
+    ])
+    .then(function (answer) {
+      var query = `INSERT INTO department (name)
+    VALUES ('${answer.newDept}')`;
+      db.query(query, function (err, res) {
+        console.log(`${answer.newDept} added successfully`);
+      });
+      runApp();
+    });
 }
 
 db.connect((err) => {
