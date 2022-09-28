@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "console.table": "^0.10.0",
-    "inquirer": "^9.1.2",
+    "inquirer": "^6.5.2",
     "mysql2": "^2.3.3"
   },
   "name": "employee-tracker",
@@ -9,10 +9,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-modules index.js"
   },
   "repository": {
-    "type": "git",
+    "type": "module",
     "url": "git+https://github.com/AaronLiuXM/Employee-Tracker.git"
   },
   "keywords": [],
