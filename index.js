@@ -17,6 +17,7 @@ function runApp() {
           "View Employees",
           "Add Department",
           "Add Role",
+          "Add Employee",
         ],
       },
     ])
@@ -40,6 +41,10 @@ function runApp() {
 
         case "Add Role":
           addRole();
+          break;
+
+        case "Add Employee":
+          addEmployee();
           break;
       }
     });
@@ -96,6 +101,64 @@ function viewEmployee() {
       runApp();
     }
   );
+}
+
+function addEmployee() {
+  db.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "first_name",
+          message: "Please enter the employee's first name",
+        },
+        {
+          type: "input",
+          name: "last_name",
+          message: "Please enter the employee's last name",
+        },
+        {
+          type: "input",
+          name: "manager_id",
+          message: "Please enter the employee's manager's ID",
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "Please select employee's role",
+          choices: function () {
+            var roleArray = [];
+            for (let i = 0; i < res.length; i++) {
+              roleArray.push(res[i].title);
+            }
+            return roleArray;
+          },
+        },
+      ])
+      .then(function (answer) {
+        let role_id;
+        for (let j = 0; j < res.length; j++) {
+          if (res[j].title == answer.role) {
+            role_id = res[j].id;
+          }
+        }
+        db.query(
+          "INSERT INTO employee SET?",
+          {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            manager_id: answer.manager_id,
+            role_id: role_id,
+          },
+          function (err) {
+            if (err) throw err;
+            console.log("Employee is added successfully");
+            runApp();
+          }
+        );
+      });
+  });
 }
 
 function addRole() {
